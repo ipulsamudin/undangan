@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Syaiful & Sarah</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Audio Player -->
+    <audio id="bgMusic" loop>
+        <source src="assets/audio/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Music Button -->
+    <button class="music-toggle" id="musicToggle">
+        <i class="fas fa-music"></i>
+    </button>
+
+    <!-- Cover/Opening Modal -->
+    <div class="cover-modal" id="coverModal">
+        <div class="cover-overlay"></div>
+        <div class="cover-content">
+            <div class="cover-inner" data-aos="fade-up">
+                <p class="cover-label">The Wedding Of</p>
+                <h1 class="cover-names">Syaiful & Sarah</h1>
+                <div class="cover-date">
+                    <p>Kamis, 30 September 2027</p>
+                </div>
+                <div class="cover-guest">
+                    <p>Kepada Yth.</p>
+                    <h3 id="guestName">Nama Tamu</h3>
+                </div>
+                <button class="btn-open" id="openInvitation">
+                    <i class="fas fa-envelope-open"></i>
+                    Buka Undangan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <div class="hero-overlay"></div>
+            <div class="hero-content" data-aos="fade-up">
+                <p class="hero-subtitle">We Are Getting Married</p>
+                <h1 class="hero-title">Syaiful & Sarah</h1>
+                <p class="hero-date">30 . 09 . 2027</p>
+            </div>
+            <div class="scroll-down">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- Greeting Section -->
+        <section class="greeting-section section-padding">
+            <div class="container">
+                <div class="greeting-content" data-aos="fade-up">
+                    <p class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+                    <p class="salam">Assalamualaikum Warahmatullahi Wabarakatuh</p>
+                    <p class="greeting-text">
+                        Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i
+                        serta kerabat sekalian untuk menghadiri acara pernikahan kami:
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Couple Section -->
+        <section class="couple-section section-padding" id="couple">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Mempelai</h2>
+                    <div class="title-divider"></div>
+                </div>
+
+                <div class="couple-wrapper">
+                    <!-- Groom -->
+                    <div class="couple-card" data-aos="fade-right">
+                        <div class="couple-photo">
+                            <img src="https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Mempelai Pria">
+                        </div>
+                        <h3 class="couple-name">Muhammad Nur Syaifullah</h3>
+                        <p class="couple-parents">Putra dari<br>Bapak Sarwi Bin Mardi<br>&<br>Ibu Eka Purwanti</p>
+                        <div class="couple-social">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <!-- <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a> -->
+                        </div>
+                    </div>
+
+                    <!-- Ampersand -->
+                    <div class="couple-ampersand" data-aos="zoom-in">
+                        <span>&</span>
+                    </div>
+
+                    <!-- Bride -->
+                    <div class="couple-card" data-aos="fade-left">
+                        <div class="couple-photo">
+                            <img src="https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Mempelai Wanita">
+                        </div>
+                        <h3 class="couple-name">Siti Sarah</h3>
+                        <p class="couple-parents">Putri dari<br>Bapak R.M Sholeh Bin R. Syafaat<br>&<br>Ibu Muhani Binti Nian</p>
+                        <div class="couple-social">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <!-- <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-facebook"></i></a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Section -->
+        <section class="quote-section">
+            <div class="quote-overlay"></div>
+            <div class="container">
+                <div class="quote-content" data-aos="fade-up">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="quote-text">
+                        "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu
+                        istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram
+                        kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."
+                    </p>
+                    <p class="quote-source">— Q.S. Ar-Rum: 21 —</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Section -->
+        <section class="event-section section-padding" id="event">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Waktu & Tempat</h2>
+                    <div class="title-divider"></div>
+                </div>
+
+                <!-- Countdown -->
+                <div class="countdown-wrapper" data-aos="fade-up">
+                    <h3 class="countdown-title">Menghitung Hari</h3>
+                    <div class="countdown" id="countdown" data-date="2027-09-30T08:00:00">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="days">00</span>
+                            <span class="countdown-label">Hari</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-label">Jam</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-label">Menit</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-label">Detik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="events-wrapper">
+                    <!-- Akad Nikah -->
+                    <div class="event-card" data-aos="fade-right">
+                        <div class="event-icon">
+                            <i class="fas fa-mosque"></i>
+                        </div>
+                        <h3 class="event-title">Akad Nikah</h3>
+                        <div class="event-details">
+                            <p><i class="far fa-calendar"></i> Kamis, 30 September 2027</p>
+                            <p><i class="far fa-clock"></i> 08:00 - 10:00 WIB</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Masjid Agung Al-Azhar</p>
+                            <p class="event-address">Jl. Sisingamangaraja No.1, Jakarta Selatan</p>
+                        </div>
+                        <a href="https://maps.google.com" target="_blank" class="btn-maps">
+                            <i class="fas fa-map-marked-alt"></i> Lihat Lokasi
+                        </a>
+                    </div>
+
+                    <!-- Resepsi -->
+                    <div class="event-card" data-aos="fade-left">
+                        <div class="event-icon">
+                            <i class="fas fa-rings-wedding"></i>
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="event-title">Resepsi</h3>
+                        <div class="event-details">
+                            <p><i class="far fa-calendar"></i> Kamis, 30 September 2027</p>
+                            <p><i class="far fa-clock"></i> 11:00 - 14:00 WIB</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Grand Ballroom Hotel Mulia</p>
+                            <p class="event-address">Jl. Asia Afrika, Senayan, Jakarta Pusat</p>
+                        </div>
+                        <a href="https://maps.google.com" target="_blank" class="btn-maps">
+                            <i class="fas fa-map-marked-alt"></i> Lihat Lokasi
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section section-padding" id="gallery">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Galeri Foto</h2>
+                    <div class="title-divider"></div>
+                    <p class="section-subtitle">Momen-momen indah kami</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 1">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                        <img src="https://images.pexels.com/photos/1456613/pexels-photo-1456613.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 2">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                        <img src="https://images.pexels.com/photos/265722/pexels-photo-265722.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+                        <img src="https://images.pexels.com/photos/1488315/pexels-photo-1488315.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 4">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
+                        <img src="https://images.pexels.com/photos/1308318/pexels-photo-1308318.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 5">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600">
+                        <img src="https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gallery 6">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP Section -->
+        <section class="rsvp-section section-padding" id="rsvp">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Konfirmasi Kehadiran</h2>
+                    <div class="title-divider"></div>
+                    <p class="section-subtitle">Mohon konfirmasi kehadiran Anda</p>
+                </div>
+
+                <div class="rsvp-wrapper">
+                    <form class="rsvp-form" id="rsvpForm" data-aos="fade-up">
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="attendance">Konfirmasi Kehadiran</label>
+                            <select id="attendance" name="attendance" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="hadir">Hadir</option>
+                                <option value="tidak_hadir">Tidak Hadir</option>
+                                <option value="ragu">Masih Ragu</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Jumlah Tamu</label>
+                            <select id="guests" name="guests">
+                                <option value="1">1 Orang</option>
+                                <option value="2">2 Orang</option>
+                                <option value="3">3 Orang</option>
+                                <option value="4">4 Orang</option>
+                                <option value="5">5 Orang</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Ucapan & Doa</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Tulis ucapan dan doa untuk kedua mempelai..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> Kirim Ucapan
+                        </button>
+                    </form>
+
+                    <!-- Attendance Stats -->
+                    <div class="attendance-stats" data-aos="fade-up">
+                        <div class="stat-item hadir">
+                            <span class="stat-number">125</span>
+                            <span class="stat-label">Hadir</span>
+                        </div>
+                        <div class="stat-item tidak">
+                            <span class="stat-number">23</span>
+                            <span class="stat-label">Tidak Hadir</span>
+                        </div>
+                        <div class="stat-item ragu">
+                            <span class="stat-number">15</span>
+                            <span class="stat-label">Ragu-ragu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wishes List -->
+                <div class="wishes-list" data-aos="fade-up">
+                    <h3 class="wishes-title">Ucapan & Doa</h3>
+                    <div class="wishes-container" id="wishesContainer">
+                        <!-- Wishes will be loaded here -->
+                        <div class="wish-item">
+                            <div class="wish-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="wish-content">
+                                <h4 class="wish-name">Budi Santoso</h4>
+                                <span class="wish-status hadir">Hadir</span>
+                                <p class="wish-message">Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin.</p>
+                                <span class="wish-time">2 jam yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="wish-item">
+                            <div class="wish-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="wish-content">
+                                <h4 class="wish-name">Dewi Lestari</h4>
+                                <span class="wish-status hadir">Hadir</span>
+                                <p class="wish-message">Barakallah! Semoga pernikahan ini membawa berkah dan kebahagiaan untuk kalian berdua.</p>
+                                <span class="wish-time">5 jam yang lalu</span>
+                            </div>
+                        </div>
+                        <div class="wish-item">
+                            <div class="wish-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="wish-content">
+                                <h4 class="wish-name">Ahmad Rizki</h4>
+                                <span class="wish-status tidak">Tidak Hadir</span>
+                                <p class="wish-message">Mohon maaf tidak bisa hadir. Semoga lancar acaranya dan bahagia selalu!</p>
+                                <span class="wish-time">1 hari yang lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gift Section -->
+        <section class="gift-section section-padding" id="gift">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">Amplop Digital</h2>
+                    <div class="title-divider"></div>
+                    <p class="section-subtitle">Doa restu Anda merupakan karunia yang sangat berarti bagi kami. Namun jika Anda ingin memberikan tanda kasih, kami menyediakan amplop digital.</p>
+                </div>
+
+                <div class="gift-wrapper">
+                    <!-- Bank Transfer -->
+                    <div class="gift-card" data-aos="fade-right">
+                        <div class="gift-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3 class="gift-title">Bank Mandiri</h3>
+                        <p class="gift-name">a.n. Muhammad Nur Syaifullah</p>
+                        <div class="gift-number">
+                            <span id="bankNumber">1234567890123</span>
+                            <button class="btn-copy" data-copy="1234567890123">
+                                <i class="far fa-copy"></i> Salin
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- E-Wallet -->
+                    <div class="gift-card" data-aos="fade-left">
+                        <div class="gift-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="gift-title">GoPay / OVO</h3>
+                        <p class="gift-name">a.n. Siti Sarah</p>
+                        <div class="gift-number">
+                            <span id="ewalletNumber">081234567890</span>
+                            <button class="btn-copy" data-copy="081234567890">
+                                <i class="far fa-copy"></i> Salin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gift Address -->
+                <div class="gift-address" data-aos="fade-up">
+                    <h3><i class="fas fa-gift"></i> Kirim Hadiah</h3>
+                    <p>Jl. Kebahagiaan No. 123, RT 01/RW 02<br>Kelurahan Cinta, Kecamatan Bahagia<br>Jakarta Selatan 12345</p>
+                    <button class="btn-copy" data-copy="Jl. Kebahagiaan No. 123, RT 01/RW 02, Kelurahan Cinta, Kecamatan Bahagia, Jakarta Selatan 12345">
+                        <i class="far fa-copy"></i> Salin Alamat
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Closing Section -->
+        <section class="closing-section">
+            <div class="closing-overlay"></div>
+            <div class="container">
+                <div class="closing-content" data-aos="fade-up">
+                    <p class="closing-thanks">Terima Kasih</p>
+                    <h2 class="closing-names">Syaiful & Sarah</h2>
+                    <p class="closing-text">
+                        Merupakan suatu kehormatan dan kebahagiaan bagi kami,
+                        apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.
+                    </p>
+                    <p class="closing-salam">Wassalamualaikum Warahmatullahi Wabarakatuh</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with <i class="fas fa-heart"></i> for Syaiful & Sarah</p>
+            <p class="footer-copyright">© 2027 Wedding Invitation</p>
+        </footer>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="#home" class="nav-item active" data-section="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#couple" class="nav-item" data-section="couple">
+            <i class="fas fa-heart"></i>
+            <span>Mempelai</span>
+        </a>
+        <a href="#event" class="nav-item" data-section="event">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Acara</span>
+        </a>
+        <a href="#gallery" class="nav-item" data-section="gallery">
+            <i class="fas fa-images"></i>
+            <span>Galeri</span>
+        </a>
+        <a href="#rsvp" class="nav-item" data-section="rsvp">
+            <i class="fas fa-envelope"></i>
+            <span>RSVP</span>
+        </a>
+    </nav>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close">&times;</button>
+        <img src="" alt="Gallery Image" class="lightbox-image">
+        <button class="lightbox-prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
