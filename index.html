@@ -414,6 +414,42 @@
     <!-- AOS Animation -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+    <!-- Firebase -->
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiC7hB-MBYx_LgEWD0HQ3mwxrkjiI2P8E",
+            authDomain: "undangan-7ba18.firebaseapp.com",
+            projectId: "undangan-7ba18",
+            storageBucket: "undangan-7ba18.firebasestorage.app",
+            messagingSenderId: "458590600416",
+            appId: "1:458590600416:web:a9f4faf2d8dc77f95ae485",
+            measurementId: "G-KEXFKHTG0D"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make Firebase functions available globally
+        window.firebaseDB = db;
+        window.firebaseAddDoc = addDoc;
+        window.firebaseCollection = collection;
+        window.firebaseGetDocs = getDocs;
+        window.firebaseQuery = query;
+        window.firebaseOrderBy = orderBy;
+        window.firebaseOnSnapshot = onSnapshot;
+        window.firebaseServerTimestamp = serverTimestamp;
+        window.firebaseReady = true;
+
+        // Dispatch event when Firebase is ready
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+
     <!-- Custom JS -->
     <script src="assets/js/script.js"></script>
 </body>

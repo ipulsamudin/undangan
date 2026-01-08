@@ -1110,6 +1110,16 @@ section {
     color: #f39c12;
 }
 
+.wish-guests {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    margin-left: 5px;
+    background: var(--accent-color);
+    color: var(--primary-dark);
+}
+
 .wish-message {
     color: var(--text-light);
     font-size: 0.95rem;

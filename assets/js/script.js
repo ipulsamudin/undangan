@@ -223,73 +223,214 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // RSVP Form Submission
+    // RSVP Form Submission with Firebase
     const rsvpForm = document.getElementById('rsvpForm');
     const wishesContainer = document.getElementById('wishesContainer');
 
+    // Initialize Firebase RSVP when ready
+    function initFirebaseRSVP() {
+        if (!window.firebaseReady) {
+            window.addEventListener('firebaseReady', initFirebaseRSVP);
+            return;
+        }
+
+        // Load existing wishes from Firebase
+        loadWishesFromFirebase();
+
+        // Listen for realtime updates
+        listenToWishes();
+    }
+
+    // Load wishes from Firebase
+    async function loadWishesFromFirebase() {
+        try {
+            const q = window.firebaseQuery(
+                window.firebaseCollection(window.firebaseDB, 'wishes'),
+                window.firebaseOrderBy('createdAt', 'desc')
+            );
+            const querySnapshot = await window.firebaseGetDocs(q);
+
+            // Clear container first
+            if (wishesContainer) {
+                wishesContainer.innerHTML = '';
+            }
+
+            // Reset stats
+            let stats = { hadir: 0, tidak_hadir: 0, ragu: 0 };
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                stats[data.attendance] = (stats[data.attendance] || 0) + 1;
+                renderWishItem(data);
+            });
+
+            // Update stats display
+            updateStatsDisplay(stats);
+        } catch (error) {
+            console.error('Error loading wishes:', error);
+        }
+    }
+
+    // Listen to realtime updates
+    function listenToWishes() {
+        try {
+            const q = window.firebaseQuery(
+                window.firebaseCollection(window.firebaseDB, 'wishes'),
+                window.firebaseOrderBy('createdAt', 'desc')
+            );
+
+            window.firebaseOnSnapshot(q, (snapshot) => {
+                // Clear container
+                if (wishesContainer) {
+                    wishesContainer.innerHTML = '';
+                }
+
+                // Reset stats
+                let stats = { hadir: 0, tidak_hadir: 0, ragu: 0 };
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    stats[data.attendance] = (stats[data.attendance] || 0) + 1;
+                    renderWishItem(data);
+                });
+
+                // Update stats display
+                updateStatsDisplay(stats);
+            });
+        } catch (error) {
+            console.error('Error listening to wishes:', error);
+        }
+    }
+
+    // Render a single wish item
+    function renderWishItem(data) {
+        if (!wishesContainer) return;
+
+        const wishItem = document.createElement('div');
+        wishItem.className = 'wish-item';
+
+        let statusClass = '';
+        let statusText = '';
+
+        switch(data.attendance) {
+            case 'hadir':
+                statusClass = 'hadir';
+                statusText = 'Hadir';
+                break;
+            case 'tidak_hadir':
+                statusClass = 'tidak';
+                statusText = 'Tidak Hadir';
+                break;
+            case 'ragu':
+                statusClass = 'ragu';
+                statusText = 'Masih Ragu';
+                break;
+        }
+
+        // Format time
+        let timeText = 'Baru saja';
+        if (data.createdAt) {
+            const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+            timeText = formatTimeAgo(date);
+        }
+
+        wishItem.innerHTML = `
+            <div class="wish-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="wish-content">
+                <h4 class="wish-name">${escapeHtml(data.name)}</h4>
+                <span class="wish-status ${statusClass}">${statusText}</span>
+                ${data.guests > 1 ? `<span class="wish-guests">${data.guests} orang</span>` : ''}
+                <p class="wish-message">${escapeHtml(data.message) || 'Selamat menempuh hidup baru!'}</p>
+                <span class="wish-time">${timeText}</span>
+            </div>
+        `;
+
+        wishesContainer.appendChild(wishItem);
+    }
+
+    // Update stats display
+    function updateStatsDisplay(stats) {
+        const hadirEl = document.querySelector('.stat-item.hadir .stat-number');
+        const tidakEl = document.querySelector('.stat-item.tidak .stat-number');
+        const raguEl = document.querySelector('.stat-item.ragu .stat-number');
+
+        if (hadirEl) hadirEl.textContent = stats.hadir || 0;
+        if (tidakEl) tidakEl.textContent = stats.tidak_hadir || 0;
+        if (raguEl) raguEl.textContent = stats.ragu || 0;
+    }
+
+    // Format time ago
+    function formatTimeAgo(date) {
+        const now = new Date();
+        const diff = now - date;
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) return `${days} hari yang lalu`;
+        if (hours > 0) return `${hours} jam yang lalu`;
+        if (minutes > 0) return `${minutes} menit yang lalu`;
+        return 'Baru saja';
+    }
+
+    // Form submission
     if (rsvpForm) {
-        rsvpForm.addEventListener('submit', function(e) {
+        rsvpForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const name = document.getElementById('name').value;
+            const name = document.getElementById('name').value.trim();
             const attendance = document.getElementById('attendance').value;
-            const message = document.getElementById('message').value;
+            const guests = document.getElementById('guests').value;
+            const message = document.getElementById('message').value.trim();
 
             if (!name || !attendance) {
-                alert('Mohon lengkapi nama dan konfirmasi kehadiran.');
+                showNotification('Mohon lengkapi nama dan konfirmasi kehadiran.', 'error');
                 return;
             }
 
-            // Create new wish item
-            const wishItem = document.createElement('div');
-            wishItem.className = 'wish-item';
-            wishItem.style.animation = 'fadeIn 0.5s ease';
+            // Disable submit button
+            const submitBtn = rsvpForm.querySelector('.btn-submit');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+            submitBtn.disabled = true;
 
-            let statusClass = '';
-            let statusText = '';
+            try {
+                // Check if Firebase is ready
+                if (!window.firebaseReady) {
+                    throw new Error('Firebase belum siap. Silakan refresh halaman.');
+                }
 
-            switch(attendance) {
-                case 'hadir':
-                    statusClass = 'hadir';
-                    statusText = 'Hadir';
-                    break;
-                case 'tidak_hadir':
-                    statusClass = 'tidak';
-                    statusText = 'Tidak Hadir';
-                    break;
-                case 'ragu':
-                    statusClass = 'ragu';
-                    statusText = 'Masih Ragu';
-                    break;
+                // Save to Firebase
+                await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'wishes'), {
+                    name: name,
+                    attendance: attendance,
+                    guests: parseInt(guests) || 1,
+                    message: message || 'Selamat menempuh hidup baru!',
+                    createdAt: window.firebaseServerTimestamp()
+                });
+
+                // Reset form
+                rsvpForm.reset();
+
+                // Show success message
+                showNotification('Terima kasih atas ucapan dan doanya!', 'success');
+
+            } catch (error) {
+                console.error('Error saving wish:', error);
+                showNotification('Gagal mengirim. Silakan coba lagi.', 'error');
+            } finally {
+                // Re-enable submit button
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
             }
-
-            wishItem.innerHTML = `
-                <div class="wish-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="wish-content">
-                    <h4 class="wish-name">${escapeHtml(name)}</h4>
-                    <span class="wish-status ${statusClass}">${statusText}</span>
-                    <p class="wish-message">${escapeHtml(message) || 'Selamat menempuh hidup baru!'}</p>
-                    <span class="wish-time">Baru saja</span>
-                </div>
-            `;
-
-            // Add to top of wishes container
-            if (wishesContainer) {
-                wishesContainer.insertBefore(wishItem, wishesContainer.firstChild);
-            }
-
-            // Update stats
-            updateStats(attendance);
-
-            // Reset form
-            rsvpForm.reset();
-
-            // Show success message
-            showNotification('Terima kasih atas ucapan dan doanya!');
         });
     }
+
+    // Initialize Firebase RSVP
+    initFirebaseRSVP();
 
     // Helper: Escape HTML
     function escapeHtml(text) {
@@ -299,37 +440,22 @@ document.addEventListener('DOMContentLoaded', function() {
         return div.innerHTML;
     }
 
-    // Helper: Update stats
-    function updateStats(attendance) {
-        const statItems = document.querySelectorAll('.stat-item');
-        statItems.forEach(item => {
-            if (item.classList.contains('hadir') && attendance === 'hadir') {
-                const numEl = item.querySelector('.stat-number');
-                numEl.textContent = parseInt(numEl.textContent) + 1;
-            } else if (item.classList.contains('tidak') && attendance === 'tidak_hadir') {
-                const numEl = item.querySelector('.stat-number');
-                numEl.textContent = parseInt(numEl.textContent) + 1;
-            } else if (item.classList.contains('ragu') && attendance === 'ragu') {
-                const numEl = item.querySelector('.stat-number');
-                numEl.textContent = parseInt(numEl.textContent) + 1;
-            }
-        });
-    }
-
     // Helper: Show notification
-    function showNotification(message) {
+    function showNotification(message, type = 'success') {
+        const bgColor = type === 'error' ? '#e74c3c' : '#27ae60';
         const notification = document.createElement('div');
         notification.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #27ae60;
+            background: ${bgColor};
             color: white;
             padding: 15px 25px;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             z-index: 10001;
             animation: slideIn 0.3s ease;
+            max-width: 300px;
         `;
         notification.textContent = message;
         document.body.appendChild(notification);
@@ -337,7 +463,9 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             notification.style.animation = 'slideOut 0.3s ease';
             setTimeout(() => {
-                document.body.removeChild(notification);
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
             }, 300);
         }, 3000);
     }
