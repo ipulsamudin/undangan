@@ -8,11 +8,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load config data
     loadConfigData();
 
-    // Initialize AOS Animation
+    // Fix mobile viewport height
+    function setMobileViewportHeight() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setMobileViewportHeight();
+    window.addEventListener('resize', setMobileViewportHeight);
+    window.addEventListener('orientationchange', function() {
+        setTimeout(setMobileViewportHeight, 100);
+    });
+
+    // Initialize AOS Animation with mobile-friendly settings
+    const isMobileDevice = window.innerWidth < 768;
+
+    // Change fade-left and fade-right to fade-up on mobile to prevent horizontal scroll
+    if (isMobileDevice) {
+        document.querySelectorAll('[data-aos="fade-left"], [data-aos="fade-right"]').forEach(function(el) {
+            el.setAttribute('data-aos', 'fade-up');
+        });
+    }
+
     AOS.init({
-        duration: 1000,
+        duration: isMobileDevice ? 600 : 1000,
         once: true,
-        offset: 100
+        offset: isMobileDevice ? 20 : 100,
+        disable: false,
+        startEvent: 'DOMContentLoaded'
     });
 
     // Elements
@@ -426,7 +448,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle resize
     window.addEventListener('resize', function() {
         isMobile = window.innerWidth < 768;
+        // Refresh AOS on resize to fix layout issues
+        AOS.refresh();
     });
+
+    // Force refresh AOS after initial load to ensure proper positioning
+    setTimeout(function() {
+        AOS.refresh();
+    }, 100);
 
 });
 
