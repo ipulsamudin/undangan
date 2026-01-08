@@ -1,8 +1,13 @@
 /* ==========================================
    WEDDING INVITATION - JAVASCRIPT
+   ==========================================
+   Membaca data dari config.js
    ========================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Load config data
+    loadConfigData();
+
     // Initialize AOS Animation
     AOS.init({
         duration: 1000,
@@ -21,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Get guest name from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
-    const guestName = urlParams.get('to') || 'Tamu Undangan';
+    const guestName = urlParams.get('to') || CONFIG.settings.defaultGuestName;
     if (guestNameEl) {
         guestNameEl.textContent = decodeURIComponent(guestName.replace(/\+/g, ' '));
     }
@@ -34,7 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
             bottomNav.classList.add('show');
 
             // Try to play music
-            playMusic();
+            if (CONFIG.music.autoplay) {
+                playMusic();
+            }
 
             // Scroll to top
             window.scrollTo(0, 0);
@@ -46,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function playMusic() {
         if (bgMusic) {
-            bgMusic.volume = 0.5;
+            bgMusic.volume = CONFIG.music.volume;
             bgMusic.play().then(() => {
                 isPlaying = true;
                 musicToggle.classList.add('playing');
@@ -71,35 +78,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Countdown Timer
-    const countdownEl = document.getElementById('countdown');
-    if (countdownEl) {
-        const targetDate = new Date(countdownEl.dataset.date).getTime();
+    function updateCountdown() {
+        const targetDate = new Date(CONFIG.event.date).getTime();
+        const now = new Date().getTime();
+        const distance = targetDate - now;
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
+        if (distance > 0) {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            if (distance > 0) {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById('days').textContent = String(days).padStart(2, '0');
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-            } else {
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-            }
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        } else {
+            document.getElementById('days').textContent = '00';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
         }
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
     }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 
     // Bottom Navigation Active State
     const navItems = document.querySelectorAll('.nav-item');
@@ -143,43 +146,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Copy to Clipboard
-    const copyButtons = document.querySelectorAll('.btn-copy');
-
-    copyButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const textToCopy = this.dataset.copy;
-
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
-                this.classList.add('copied');
-
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                // Fallback
-                const textarea = document.createElement('textarea');
-                textarea.value = textToCopy;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
-                this.classList.add('copied');
-
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.classList.remove('copied');
-                }, 2000);
-            });
+    // Copy to Clipboard - Bank
+    const btnCopyBank = document.getElementById('btnCopyBank');
+    if (btnCopyBank) {
+        btnCopyBank.addEventListener('click', function() {
+            copyToClipboard(CONFIG.gift.bank.accountNumber, this);
         });
-    });
+    }
+
+    // Copy to Clipboard - E-Wallet
+    const btnCopyEwallet = document.getElementById('btnCopyEwallet');
+    if (btnCopyEwallet) {
+        btnCopyEwallet.addEventListener('click', function() {
+            copyToClipboard(CONFIG.gift.ewallet.accountNumber, this);
+        });
+    }
+
+    // Copy to Clipboard - Address
+    const btnCopyAddress = document.getElementById('btnCopyAddress');
+    if (btnCopyAddress) {
+        btnCopyAddress.addEventListener('click', function() {
+            copyToClipboard(CONFIG.gift.address.short, this);
+        });
+    }
+
+    function copyToClipboard(text, button) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+            button.classList.add('copied');
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+            button.classList.add('copied');
+
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('copied');
+            }, 2000);
+        });
+    }
 
     // RSVP Form Submission
     const rsvpForm = document.getElementById('rsvpForm');
@@ -238,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 wishesContainer.insertBefore(wishItem, wishesContainer.firstChild);
             }
 
-            // Update stats (dummy - in real app, this would be from database)
+            // Update stats
             updateStats(attendance);
 
             // Reset form
@@ -257,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return div.innerHTML;
     }
 
-    // Helper: Update stats (dummy)
+    // Helper: Update stats
     function updateStats(attendance) {
         const statItems = document.querySelectorAll('.stat-item');
         statItems.forEach(item => {
@@ -301,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Gallery Lightbox
-    const galleryItems = document.querySelectorAll('.gallery-item');
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.querySelector('.lightbox-image');
     const lightboxClose = document.querySelector('.lightbox-close');
@@ -309,17 +328,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const lightboxNext = document.querySelector('.lightbox-next');
 
     let currentImageIndex = 0;
-    const galleryImages = [];
+    const galleryImages = CONFIG.gallery;
 
-    galleryItems.forEach((item, index) => {
-        const img = item.querySelector('img');
-        galleryImages.push(img.src);
-
-        item.addEventListener('click', function() {
-            currentImageIndex = index;
-            openLightbox(img.src);
+    // Add click event to gallery items (after they are loaded)
+    setTimeout(() => {
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', function() {
+                currentImageIndex = index;
+                openLightbox(galleryImages[index]);
+            });
         });
-    });
+    }, 500);
 
     function openLightbox(src) {
         lightboxImage.src = src;
@@ -389,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 
-    // Parallax Effect (optional - for better performance, can be disabled on mobile)
+    // Parallax Effect
     let isMobile = window.innerWidth < 768;
 
     if (!isMobile) {
@@ -408,17 +428,128 @@ document.addEventListener('DOMContentLoaded', function() {
         isMobile = window.innerWidth < 768;
     });
 
-    // Preload images for smoother gallery
-    galleryImages.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-
 });
 
-// Service Worker Registration (optional - for PWA)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        // navigator.serviceWorker.register('/sw.js');
-    });
+/**
+ * Load data from CONFIG to HTML elements
+ */
+function loadConfigData() {
+    const coupleNames = `${CONFIG.groom.shortName} & ${CONFIG.bride.shortName}`;
+
+    // Update page title
+    document.title = `Undangan Pernikahan - ${coupleNames}`;
+
+    // Cover Section
+    setText('coverNames', coupleNames);
+    setText('coverDate', CONFIG.event.dateDisplay);
+
+    // Hero Section
+    setText('heroNames', coupleNames);
+    setText('heroDate', CONFIG.event.dateShort);
+
+    // Greeting Section
+    setText('salamPembuka', CONFIG.settings.salam);
+
+    // Groom Section
+    setImage('groomPhoto', CONFIG.groom.photo);
+    setText('groomName', CONFIG.groom.name);
+    setHTML('groomParents', `Putra Pertama dari<br>Bapak ${CONFIG.groom.fatherName}<br>&<br>Ibu ${CONFIG.groom.motherName}`);
+
+    // Groom Social
+    const groomSocial = document.getElementById('groomSocial');
+    if (groomSocial && CONFIG.groom.instagram) {
+        groomSocial.innerHTML = `<a href="${CONFIG.groom.instagram}" target="_blank"><i class="fab fa-instagram"></i></a>`;
+    }
+
+    // Bride Section
+    setImage('bridePhoto', CONFIG.bride.photo);
+    setText('brideName', CONFIG.bride.name);
+    setHTML('brideParents', `Putri Ketiga dari<br>Bapak ${CONFIG.bride.fatherName}<br>&<br>Ibu ${CONFIG.bride.motherName}`);
+
+    // Bride Social
+    const brideSocial = document.getElementById('brideSocial');
+    if (brideSocial && CONFIG.bride.instagram) {
+        brideSocial.innerHTML = `<a href="${CONFIG.bride.instagram}" target="_blank"><i class="fab fa-instagram"></i></a>`;
+    }
+
+    // Quote Section
+    setText('quoteText', `"${CONFIG.quote.text}"`);
+    setText('quoteSource', `— ${CONFIG.quote.source} —`);
+
+    // Event Section - Akad
+    setText('akadDate', CONFIG.event.dateDisplay);
+    setText('akadTime', CONFIG.event.akad.time);
+    setText('akadVenue', CONFIG.event.akad.venue);
+    setText('akadAddress', CONFIG.event.akad.address);
+    setAttr('akadMaps', 'href', CONFIG.event.akad.mapsUrl);
+
+    // Event Section - Resepsi
+    setText('resepsiDate', CONFIG.event.dateDisplay);
+    setText('resepsiTime', CONFIG.event.resepsi.time);
+    setText('resepsiVenue', CONFIG.event.resepsi.venue);
+    setText('resepsiAddress', CONFIG.event.resepsi.address);
+    setAttr('resepsiMaps', 'href', CONFIG.event.resepsi.mapsUrl);
+
+    // Gallery Section
+    const galleryGrid = document.getElementById('galleryGrid');
+    if (galleryGrid) {
+        galleryGrid.innerHTML = CONFIG.gallery.map((src, index) => `
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="${(index + 1) * 100}">
+                <img src="${src}" alt="Gallery ${index + 1}">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Gift Section - Bank
+    setText('bankName', CONFIG.gift.bank.name);
+    setText('bankAccountName', `a.n. ${CONFIG.gift.bank.accountName}`);
+    setText('bankNumber', CONFIG.gift.bank.accountNumber);
+
+    // Gift Section - E-Wallet
+    setText('ewalletName', CONFIG.gift.ewallet.name);
+    setText('ewalletAccountName', `a.n. ${CONFIG.gift.ewallet.accountName}`);
+    setText('ewalletNumber', CONFIG.gift.ewallet.accountNumber);
+
+    // Gift Section - Address
+    setHTML('giftAddress', CONFIG.gift.address.full.replace(/\n/g, '<br>'));
+
+    // Closing Section
+    setText('closingNames', coupleNames);
+    setText('salamPenutup', CONFIG.settings.salamPenutup);
+
+    // Footer
+    setText('footerNames', coupleNames);
+    const year = new Date(CONFIG.event.date).getFullYear();
+    setText('footerYear', `© ${year} Wedding Invitation`);
+
+    // Music
+    const musicSource = document.getElementById('musicSource');
+    if (musicSource) {
+        musicSource.src = CONFIG.music.src;
+        document.getElementById('bgMusic').load();
+    }
+}
+
+// Helper functions
+function setText(id, text) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+}
+
+function setHTML(id, html) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+}
+
+function setImage(id, src) {
+    const el = document.getElementById(id);
+    if (el) el.src = src;
+}
+
+function setAttr(id, attr, value) {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute(attr, value);
 }
