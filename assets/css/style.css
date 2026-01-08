@@ -1332,42 +1332,202 @@ body {
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .section-padding {
+        padding: 50px 0;
+    }
+
+    /* Cover */
+    .cover-inner {
+        padding: 30px 20px;
+        margin: 10px;
+        max-width: 95%;
+    }
+
     .cover-names {
+        font-size: 2.2rem;
+    }
+
+    .cover-date p {
+        font-size: 0.95rem;
+    }
+
+    .cover-guest h3 {
+        font-size: 1.2rem;
+    }
+
+    .btn-open {
+        padding: 12px 30px;
+        font-size: 0.9rem;
+    }
+
+    /* Hero */
+    .hero-title {
         font-size: 2.5rem;
     }
 
-    .hero-title {
-        font-size: 2.8rem;
+    .hero-subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 3px;
     }
 
+    .hero-date {
+        font-size: 1.1rem;
+        letter-spacing: 5px;
+    }
+
+    /* Section titles */
     .section-title {
         font-size: 2rem;
     }
 
+    .section-subtitle {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+
+    /* Greeting */
     .bismillah {
+        font-size: 1.6rem;
+    }
+
+    .salam {
+        font-size: 1.1rem;
+    }
+
+    .greeting-text {
+        font-size: 0.95rem;
+    }
+
+    /* Couple */
+    .couple-card {
+        padding: 30px 20px;
+        min-width: auto;
+        width: 100%;
+    }
+
+    .couple-photo {
+        width: 140px;
+        height: 140px;
+    }
+
+    .couple-name {
+        font-size: 1.5rem;
+    }
+
+    .couple-parents {
+        font-size: 0.85rem;
+    }
+
+    .couple-ampersand {
+        font-size: 2.5rem;
+        margin: 10px 0;
+    }
+
+    /* Quote */
+    .quote-text {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+
+    .quote-icon {
         font-size: 2rem;
     }
 
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-
+    /* Countdown */
     .countdown {
-        gap: 10px;
+        gap: 8px;
     }
 
     .countdown-item {
-        min-width: 70px;
-        padding: 15px 10px;
+        min-width: 65px;
+        padding: 12px 8px;
     }
 
     .countdown-number {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
+    .countdown-label {
+        font-size: 0.7rem;
+    }
+
+    /* Events */
+    .event-card {
+        padding: 30px 20px;
+    }
+
+    .event-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .event-title {
+        font-size: 1.8rem;
+    }
+
+    .event-details p {
+        font-size: 0.9rem;
+    }
+
+    .btn-maps {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* RSVP */
+    .rsvp-form {
+        padding: 25px 15px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+
+    .btn-submit {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    /* Stats */
+    .attendance-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .stat-item {
+        width: auto;
+        min-width: 90px;
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    /* Gift */
     .gift-wrapper {
         flex-direction: column;
         align-items: center;
+    }
+
+    .gift-card {
+        width: 100%;
+        padding: 25px 20px;
     }
 
     .gift-number {
@@ -1375,13 +1535,114 @@ body {
         gap: 10px;
     }
 
-    .attendance-stats {
-        flex-direction: column;
-        align-items: center;
+    .gift-number span {
+        font-size: 0.95rem;
     }
 
-    .stat-item {
-        width: 100%;
-        max-width: 200px;
+    .gift-address {
+        padding: 20px 15px;
+    }
+
+    .gift-address p {
+        font-size: 0.9rem;
+    }
+
+    /* Closing */
+    .closing-section {
+        padding: 60px 0;
+    }
+
+    .closing-names {
+        font-size: 2.5rem;
+    }
+
+    .closing-text {
+        font-size: 0.95rem;
+        padding: 0 15px;
+    }
+
+    /* Wishes */
+    .wish-item {
+        padding: 15px;
+    }
+
+    .wish-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .wish-name {
+        font-size: 0.95rem;
+    }
+
+    .wish-message {
+        font-size: 0.85rem;
+    }
+
+    /* Lightbox */
+    .lightbox-prev,
+    .lightbox-next {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
+
+    .lightbox-close {
+        top: 10px;
+        right: 15px;
+        font-size: 2.5rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .cover-names {
+        font-size: 1.8rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .countdown-item {
+        min-width: 55px;
+        padding: 10px 6px;
+    }
+
+    .countdown-number {
+        font-size: 1.5rem;
+    }
+
+    .couple-name {
+        font-size: 1.3rem;
+    }
+
+    .closing-names {
+        font-size: 2rem;
+    }
+}
+
+/* Fix background-attachment: fixed on iOS/mobile */
+@supports (-webkit-touch-callout: none) {
+    .hero-section,
+    .quote-section,
+    .closing-section {
+        background-attachment: scroll;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .hero-section,
+    .quote-section,
+    .closing-section {
+        background-attachment: scroll;
     }
 }
