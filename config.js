@@ -84,6 +84,42 @@ const CONFIG = {
     },
 
     // ==========================================
+    // OUR JOURNEY / PERJALANAN CINTA
+    // ==========================================
+    journey: [
+        {
+            date: "20 Juli 2025",
+            title: "Pertama Bertemu",
+            description: "Kami pertama kali bertemu di dating app. Saat itu, kami sering mengirim pesan dan ada sesuatu yang berbeda terasa di hati.",
+            icon: "fas fa-heart"
+        },
+        {
+            date: "18 September 2025",
+            title: "Mulai Dekat",
+            description: "Setelah beberapa kali bertemu, kami mulai sering mengobrol dan berbagi cerita. Dari sini, kami mulai mengenal satu sama lain lebih dalam.",
+            icon: "fas fa-comments"
+        },
+        {
+            date: "30 September 2025",
+            title: "Resmi Berpacaran",
+            description: "Di bawah langit malam yang penuh bintang, kami memutuskan untuk memulai hubungan yang lebih serius. Hari yang tak akan pernah terlupakan.",
+            icon: "fas fa-hand-holding-heart"
+        },
+        {
+            date: "28 November 2026",
+            title: "Lamaran",
+            description: "Dengan penuh keberanian dan cinta, lamaran diajukan dan diterima dengan penuh kebahagiaan. Langkah menuju kehidupan baru dimulai.",
+            icon: "fas fa-ring"
+        },
+        {
+            date: "30 September 2027",
+            title: "Hari Bahagia",
+            description: "Akhirnya, hari yang kami tunggu-tunggu tiba. Kami siap untuk memulai perjalanan baru sebagai suami dan istri.",
+            icon: "fas fa-mosque"
+        }
+    ],
+
+    // ==========================================
     // GALERI FOTO
     // ==========================================
     gallery: [

@@ -505,6 +505,24 @@ function loadConfigData() {
     setText('quoteText', `"${CONFIG.quote.text}"`);
     setText('quoteSource', `— ${CONFIG.quote.source} —`);
 
+    // Journey Section
+    const journeyTimeline = document.getElementById('journeyTimeline');
+    if (journeyTimeline && CONFIG.journey) {
+        journeyTimeline.innerHTML = CONFIG.journey.map((item, index) => `
+            <div class="journey-item" data-aos="fade-up" data-aos-delay="${(index + 1) * 100}">
+                <div class="journey-dot"></div>
+                <div class="journey-content">
+                    <div class="journey-icon">
+                        <i class="${item.icon}"></i>
+                    </div>
+                    <span class="journey-date">${item.date}</span>
+                    <h3 class="journey-title">${item.title}</h3>
+                    <p class="journey-description">${item.description}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
     // Event Section - Akad
     setText('akadDate', CONFIG.event.dateDisplay);
     setText('akadTime', CONFIG.event.akad.time);
