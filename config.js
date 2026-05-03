@@ -52,7 +52,7 @@ const CONFIG = {
 
         // Resepsi
         resepsi: {
-            time: "11:00 - 14:00 WIB",
+            time: "11:00 WIB - Selesai",
             venue: "Basecamp Konsep Depok",
             address: "Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
             mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
