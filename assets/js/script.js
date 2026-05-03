@@ -690,6 +690,7 @@ function loadConfigData() {
 
     // Gift Section - Address
     setHTML('giftAddress', CONFIG.gift.address.full.replace(/\n/g, '<br>'));
+    setAttr('giftAddressMaps', 'href', CONFIG.gift.address.mapsUrl);
 
     // Closing Section
     setText('closingNames', coupleNames);

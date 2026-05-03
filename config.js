@@ -34,27 +34,28 @@ const CONFIG = {
     // DATA ACARA
     // ==========================================
     event: {
-        // Tanggal & Waktu (format: YYYY-MM-DDTHH:MM:SS)
-        date: "2027-09-30T08:00:00",
+        // Tanggal & Waktu utama untuk countdown (format: YYYY-MM-DDTHH:MM:SS)
+        // -> Diarahkan ke tanggal akad nikah (acara puncak)
+        date: "2026-12-06T08:00:00",
 
-        // Format tanggal yang ditampilkan
-        dateDisplay: "Kamis, 30 September 2027",
-        dateShort: "30 . 09 . 2027",
+        // Format tanggal yang ditampilkan (acara puncak: Akad Nikah)
+        dateDisplay: "Minggu, 6 Desember 2026",
+        dateShort: "06 . 12 . 2026",
 
         // Akad Nikah
         akad: {
             time: "08:00 - 10:00 WIB",
-            venue: "Masjid Agung Al-Azhar",
-            address: "Jl. Sisingamangaraja No.1, Jakarta Selatan",
-            mapsUrl: "https://maps.google.com",
+            venue: "Basecamp Konsep Depok",
+            address: "Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
         },
 
         // Resepsi
         resepsi: {
             time: "11:00 - 14:00 WIB",
-            venue: "Grand Ballroom Hotel Mulia",
-            address: "Jl. Asia Afrika, Senayan, Jakarta Pusat",
-            mapsUrl: "https://maps.google.com",
+            venue: "Basecamp Konsep Depok",
+            address: "Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
         },
     },
 
@@ -66,20 +67,21 @@ const CONFIG = {
         bank: {
             name: "Bank Mandiri",
             accountName: "Muhammad Nur Syaifullah",
-            accountNumber: "1234567890123",
+            accountNumber: "1380018318548",
         },
 
         // E-Wallet
         ewallet: {
             name: "GoPay / OVO",
-            accountName: "Siti Sarah",
-            accountNumber: "081234567890",
+            accountName: "Syaiful",
+            accountNumber: "085219679808",
         },
 
         // Alamat Pengiriman Hadiah
         address: {
-            full: "Jl. Kebahagiaan No. 123, RT 01/RW 02\nKelurahan Cinta, Kecamatan Bahagia\nJakarta Selatan 12345",
-            short: "Jl. Kebahagiaan No. 123, RT 01/RW 02, Kelurahan Cinta, Kecamatan Bahagia, Jakarta Selatan 12345",
+            full: "Basecamp Konsep Depok\nCisalak Ps., Kec. Cimanggis\nKota Depok, Jawa Barat 16452",
+            short: "Basecamp Konsep Depok, Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
         },
     },
 
@@ -106,13 +108,13 @@ const CONFIG = {
             icon: "fas fa-hand-holding-heart"
         },
         {
-            date: "28 November 2026",
+            date: "19 Juli 2026",
             title: "Lamaran",
             description: "Dengan penuh keberanian dan cinta, lamaran diajukan dan diterima dengan penuh kebahagiaan. Langkah menuju kehidupan baru dimulai.",
             icon: "fas fa-ring"
         },
         {
-            date: "30 September 2027",
+            date: "6 Desember 2026",
             title: "Hari Bahagia",
             description: "Akhirnya, hari yang kami tunggu-tunggu tiba. Kami siap untuk memulai perjalanan baru sebagai suami dan istri.",
             icon: "fas fa-mosque"
