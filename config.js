@@ -65,9 +65,9 @@ const CONFIG = {
     gift: {
         // Bank Transfer
         bank: {
-            name: "Bank Mandiri",
-            accountName: "Muhammad Nur Syaifullah",
-            accountNumber: "1380018318548",
+            name: "BANK BCA",
+            accountName: "Siti Sarah",
+            accountNumber: "1663708396",
         },
 
         // E-Wallet
