@@ -36,18 +36,18 @@ const CONFIG = {
     event: {
         // Tanggal & Waktu utama untuk countdown (format: YYYY-MM-DDTHH:MM:SS)
         // -> Diarahkan ke tanggal akad nikah (acara puncak)
-        date: "2026-12-06T08:00:00",
+        date: "2026-12-11T08:00:00",
 
         // Format tanggal yang ditampilkan (acara puncak: Akad Nikah)
-        dateDisplay: "Minggu, 6 Desember 2026",
-        dateShort: "06 . 12 . 2026",
+        dateDisplay: "Jumat, 11 Desember 2026",
+        dateShort: "11 . 12 . 2026",
 
         // Akad Nikah
         akad: {
             time: "08:00 - 10:00 WIB",
-            venue: "Basecamp Konsep Depok",
-            address: "Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
-            mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
+            venue: "KUA Cimanggis",
+            address: "Perum Permata Puri, Jl. Zamrud Raya VI No.3, Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            mapsUrl: "https://maps.app.goo.gl/PnYAdP1HVkH4bAj49",
         },
 
         // Resepsi
@@ -114,7 +114,7 @@ const CONFIG = {
             icon: "fas fa-ring"
         },
         {
-            date: "6 Desember 2026",
+            date: "11 Desember 2026",
             title: "Hari Bahagia",
             description: "Akhirnya, hari yang kami tunggu-tunggu tiba. Kami siap untuk memulai perjalanan baru sebagai suami dan istri.",
             icon: "fas fa-mosque"
