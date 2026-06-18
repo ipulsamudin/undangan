@@ -599,6 +599,10 @@ function loadConfigData() {
     // Cover Section
     setText('coverNames', coupleNames);
     setText('coverDate', CONFIG.event.dateDisplay);
+    const coverPhotoEl = document.getElementById('coverPhoto');
+    if (coverPhotoEl && CONFIG.cover && CONFIG.cover.photo) {
+        coverPhotoEl.src = CONFIG.cover.photo;
+    }
 
     // Hero Section
     setText('heroNames', coupleNames);

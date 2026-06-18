@@ -150,13 +150,13 @@ section {
     height: 100%;
     height: 100dvh; /* Dynamic viewport height for mobile */
     z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .cover-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -166,6 +166,7 @@ section {
         radial-gradient(circle at 85% 85%, rgba(184, 196, 168, 0.35) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(224, 200, 150, 0.30) 0%, transparent 45%),
         var(--cream);
+    z-index: 0;
 }
 
 .cover-content {
@@ -173,6 +174,17 @@ section {
     z-index: 1;
     text-align: center;
     padding: 20px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.cover-modal > .ornament-corner {
+    position: fixed;
+    z-index: 1;
 }
 
 .cover-inner {
@@ -184,6 +196,21 @@ section {
     max-width: 450px;
     border: 1px solid var(--rose-soft);
     overflow: hidden;
+}
+
+.cover-photo {
+    width: 160px;
+    height: 144px;
+    margin: 8px auto 22px;
+    filter: drop-shadow(0 6px 14px rgba(201, 123, 132, 0.35));
+}
+
+.cover-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: url(#heart-clip);
+    -webkit-clip-path: url(#heart-clip);
 }
 
 .cover-label {
@@ -1539,6 +1566,12 @@ section {
         padding: 40px 30px;
     }
 
+    .cover-photo {
+        width: 130px;
+        height: 117px;
+        margin: 5px auto 18px;
+    }
+
     .cover-names {
         font-size: 3rem;
     }
@@ -1641,6 +1674,12 @@ section {
         padding: 30px 20px;
         margin: 10px;
         max-width: 95%;
+    }
+
+    .cover-photo {
+        width: 110px;
+        height: 99px;
+        margin: 4px auto 15px;
     }
 
     .cover-names {
@@ -1912,6 +1951,12 @@ section {
 
 /* Extra small devices */
 @media (max-width: 360px) {
+    .cover-photo {
+        width: 95px;
+        height: 85px;
+        margin: 2px auto 12px;
+    }
+
     .cover-names {
         font-size: 1.8rem;
     }

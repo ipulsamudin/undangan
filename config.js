@@ -31,6 +31,14 @@ const CONFIG = {
     },
 
     // ==========================================
+    // FOTO COVER (BENTUK LOVE)
+    // ==========================================
+    cover: {
+        // Ganti dengan URL foto pasangan kakak (lokal atau eksternal)
+        photo: "assets/images/couple.jpg",
+    },
+
+    // ==========================================
     // DATA ACARA
     // ==========================================
     event: {
