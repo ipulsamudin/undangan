@@ -2109,7 +2109,7 @@ section {
     overflow: hidden;
 }
 
-.cover-modal { overflow: hidden; }
+.cover-modal { overflow-y: auto; overflow-x: hidden; }
 
 /* Mobile scaling */
 @media (max-width: 768px) {
