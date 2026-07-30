@@ -591,7 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Load data from CONFIG to HTML elements
  */
 function loadConfigData() {
-    const coupleNames = `${CONFIG.bride.shortName} & ${CONFIG.groom.shortName}`;
+    const coupleNames = `${CONFIG.groom.shortName} & ${CONFIG.bride.shortName}`;
 
     // Update page title
     document.title = `Undangan Pernikahan - ${coupleNames}`;
