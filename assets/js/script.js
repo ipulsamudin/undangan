@@ -226,6 +226,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // RSVP Form Submission with Firebase
     const rsvpForm = document.getElementById('rsvpForm');
     const wishesContainer = document.getElementById('wishesContainer');
+    const btnLoadMore = document.getElementById('btnLoadMore');
+    const wishesEmpty = document.getElementById('wishesEmpty');
+
+    const WISHES_PAGE_SIZE = 5;
+    const wishesState = {
+        lastVisibleDoc: null,        // cursor, only updated by loadMoreWishes
+        hasMoreOlder: true,
+        renderedIds: new Map(),      // id -> attendance (for dedup + modified handling)
+        optimisticIds: new Set(),    // ids counted client-side; skip re-count on snapshot echo
+        initialSeeded: false,
+        stats: { hadir: 0, tidak_hadir: 0, ragu: 0 },
+    };
 
     // Initialize Firebase RSVP when ready
     function initFirebaseRSVP() {
@@ -234,80 +246,181 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Load existing wishes from Firebase
-        loadWishesFromFirebase();
+        // Seed accurate totals for stats (independent of paginated list)
+        seedStatsFromServer();
 
-        // Listen for realtime updates
+        // Subscribe realtime to only the newest page
         listenToWishes();
-    }
 
-    // Load wishes from Firebase
-    async function loadWishesFromFirebase() {
-        try {
-            const q = window.firebaseQuery(
-                window.firebaseCollection(window.firebaseDB, 'wishes'),
-                window.firebaseOrderBy('createdAt', 'desc')
-            );
-            const querySnapshot = await window.firebaseGetDocs(q);
-
-            // Clear container first
-            if (wishesContainer) {
-                wishesContainer.innerHTML = '';
-            }
-
-            // Reset stats
-            let stats = { hadir: 0, tidak_hadir: 0, ragu: 0 };
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                stats[data.attendance] = (stats[data.attendance] || 0) + 1;
-                renderWishItem(data);
-            });
-
-            // Update stats display
-            updateStatsDisplay(stats);
-        } catch (error) {
-            console.error('Error loading wishes:', error);
+        if (btnLoadMore) {
+            btnLoadMore.addEventListener('click', loadMoreWishes);
         }
     }
 
-    // Listen to realtime updates
+    // Seed hadir/tidak_hadir/ragu counts via Firestore aggregate count (1 read each)
+    async function seedStatsFromServer() {
+        try {
+            const coll = window.firebaseCollection(window.firebaseDB, 'wishes');
+            const attendances = ['hadir', 'tidak_hadir', 'ragu'];
+            const results = await Promise.all(attendances.map(a =>
+                window.firebaseGetCountFromServer(
+                    window.firebaseQuery(coll, window.firebaseWhere('attendance', '==', a))
+                )
+            ));
+            attendances.forEach((a, i) => {
+                wishesState.stats[a] = results[i].data().count;
+            });
+            updateStatsDisplay(wishesState.stats);
+        } catch (error) {
+            console.error('Error seeding stats:', error);
+        }
+    }
+
+    // Realtime listener on the newest PAGE_SIZE wishes only
     function listenToWishes() {
         try {
             const q = window.firebaseQuery(
                 window.firebaseCollection(window.firebaseDB, 'wishes'),
-                window.firebaseOrderBy('createdAt', 'desc')
+                window.firebaseOrderBy('createdAt', 'desc'),
+                window.firebaseLimit(WISHES_PAGE_SIZE)
             );
 
             window.firebaseOnSnapshot(q, (snapshot) => {
-                // Clear container
-                if (wishesContainer) {
-                    wishesContainer.innerHTML = '';
+                if (!wishesState.initialSeeded) {
+                    // First fire: batch render as the initial page
+                    if (wishesContainer) wishesContainer.innerHTML = '';
+                    wishesState.renderedIds.clear();
+
+                    snapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        const el = renderWishItem(docSnap.id, data);
+                        if (wishesContainer) wishesContainer.appendChild(el);
+                        wishesState.renderedIds.set(docSnap.id, data.attendance);
+                    });
+
+                    wishesState.lastVisibleDoc = snapshot.docs.length
+                        ? snapshot.docs[snapshot.docs.length - 1]
+                        : null;
+                    wishesState.hasMoreOlder = snapshot.size === WISHES_PAGE_SIZE;
+                    wishesState.initialSeeded = true;
+
+                    updateEmptyState();
+                    updateLoadMoreButton();
+                    return;
                 }
 
-                // Reset stats
-                let stats = { hadir: 0, tidak_hadir: 0, ragu: 0 };
+                // Subsequent updates: react to changes only
+                snapshot.docChanges().forEach((change) => {
+                    const id = change.doc.id;
+                    const data = change.doc.data();
 
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    stats[data.attendance] = (stats[data.attendance] || 0) + 1;
-                    renderWishItem(data);
+                    if (change.type === 'added') {
+                        if (wishesState.renderedIds.has(id)) return;
+
+                        const el = renderWishItem(id, data);
+                        if (wishesContainer) {
+                            if (wishesContainer.firstChild) {
+                                wishesContainer.insertBefore(el, wishesContainer.firstChild);
+                            } else {
+                                wishesContainer.appendChild(el);
+                            }
+                        }
+                        wishesState.renderedIds.set(id, data.attendance);
+
+                        if (wishesState.optimisticIds.has(id)) {
+                            wishesState.optimisticIds.delete(id);
+                        } else {
+                            bumpStats(data.attendance, 1);
+                        }
+                        updateEmptyState();
+                    } else if (change.type === 'modified') {
+                        const oldAttendance = wishesState.renderedIds.get(id);
+                        const existing = wishesContainer
+                            ? wishesContainer.querySelector(`[data-id="${CSS.escape(id)}"]`)
+                            : null;
+                        if (existing) {
+                            existing.replaceWith(renderWishItem(id, data));
+                        }
+                        wishesState.renderedIds.set(id, data.attendance);
+                        if (oldAttendance && oldAttendance !== data.attendance) {
+                            bumpStats(oldAttendance, -1);
+                            bumpStats(data.attendance, 1);
+                        }
+                    }
+                    // 'removed' is ignored: docs leaving the limit(PAGE_SIZE) window
+                    // aren't actually deleted, and their DOM node must stay visible.
                 });
-
-                // Update stats display
-                updateStatsDisplay(stats);
             });
         } catch (error) {
             console.error('Error listening to wishes:', error);
         }
     }
 
-    // Render a single wish item
-    function renderWishItem(data) {
-        if (!wishesContainer) return;
+    // Load older wishes on demand (non-realtime cursor pagination)
+    async function loadMoreWishes() {
+        if (!wishesState.hasMoreOlder || !wishesState.lastVisibleDoc) return;
 
+        const label = btnLoadMore && btnLoadMore.querySelector('.btn-load-more-label');
+        const originalLabel = label ? label.textContent : '';
+        if (btnLoadMore) btnLoadMore.disabled = true;
+        if (label) label.textContent = 'Memuat...';
+
+        try {
+            const q = window.firebaseQuery(
+                window.firebaseCollection(window.firebaseDB, 'wishes'),
+                window.firebaseOrderBy('createdAt', 'desc'),
+                window.firebaseStartAfter(wishesState.lastVisibleDoc),
+                window.firebaseLimit(WISHES_PAGE_SIZE)
+            );
+            const snap = await window.firebaseGetDocs(q);
+
+            snap.forEach((docSnap) => {
+                const id = docSnap.id;
+                if (wishesState.renderedIds.has(id)) return;
+                const data = docSnap.data();
+                const el = renderWishItem(id, data);
+                if (wishesContainer) wishesContainer.appendChild(el);
+                wishesState.renderedIds.set(id, data.attendance);
+            });
+
+            if (snap.docs.length > 0) {
+                wishesState.lastVisibleDoc = snap.docs[snap.docs.length - 1];
+            }
+            if (snap.size < WISHES_PAGE_SIZE) {
+                wishesState.hasMoreOlder = false;
+            }
+        } catch (error) {
+            console.error('Error loading more wishes:', error);
+        } finally {
+            if (btnLoadMore) btnLoadMore.disabled = false;
+            if (label) label.textContent = originalLabel || 'Muat Lebih Banyak';
+            updateLoadMoreButton();
+        }
+    }
+
+    function updateEmptyState() {
+        if (wishesEmpty) {
+            wishesEmpty.hidden = wishesState.renderedIds.size > 0;
+        }
+    }
+
+    function updateLoadMoreButton() {
+        if (btnLoadMore) {
+            btnLoadMore.hidden = !wishesState.hasMoreOlder;
+        }
+    }
+
+    function bumpStats(attendance, delta) {
+        if (!(attendance in wishesState.stats)) return;
+        wishesState.stats[attendance] = Math.max(0, (wishesState.stats[attendance] || 0) + delta);
+        updateStatsDisplay(wishesState.stats);
+    }
+
+    // Build a single wish item element (caller decides where to insert)
+    function renderWishItem(docId, data) {
         const wishItem = document.createElement('div');
         wishItem.className = 'wish-item';
+        if (docId) wishItem.dataset.id = docId;
 
         let statusClass = '';
         let statusText = '';
@@ -327,7 +440,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
 
-        // Format time
         let timeText = 'Baru saja';
         if (data.createdAt) {
             const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
@@ -347,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        wishesContainer.appendChild(wishItem);
+        return wishItem;
     }
 
     // Update stats display
@@ -404,13 +516,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 // Save to Firebase
-                await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'wishes'), {
+                const docRef = await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'wishes'), {
                     name: name,
                     attendance: attendance,
                     guests: parseInt(guests) || 1,
                     message: message || 'Selamat menempuh hidup baru!',
                     createdAt: window.firebaseServerTimestamp()
                 });
+
+                // Optimistic stats bump so the counter updates instantly,
+                // even before the snapshot echo arrives. The listener will
+                // skip re-counting this id via wishesState.optimisticIds.
+                if (docRef && docRef.id) {
+                    wishesState.optimisticIds.add(docRef.id);
+                    bumpStats(attendance, 1);
+                }
 
                 // Reset form
                 rsvpForm.reset();

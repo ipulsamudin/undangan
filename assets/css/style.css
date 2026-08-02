@@ -648,13 +648,13 @@ section {
 .journey-item:nth-child(odd) .journey-content {
     text-align: right;
     padding-right: 50px;
-    padding-left: 0;
+    padding-left: 30px;
 }
 
 .journey-item:nth-child(even) .journey-content {
     text-align: left;
     padding-left: 50px;
-    padding-right: 0;
+    padding-right: 30px;
 }
 
 .journey-content {
@@ -1112,9 +1112,43 @@ section {
 }
 
 .wishes-container {
-    max-height: 500px;
-    overflow-y: auto;
-    padding-right: 10px;
+    /* No fixed max-height: pagination via "Muat Lebih Banyak" controls length. */
+}
+
+.wishes-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.wishes-empty {
+    color: #a08a8a;
+    font-style: italic;
+    margin: 20px 0 0;
+}
+
+.btn-load-more {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.25s ease, color 0.25s ease, opacity 0.25s ease;
+}
+
+.btn-load-more:hover:not(:disabled) {
+    background: var(--primary-color);
+    color: var(--text-white);
+}
+
+.btn-load-more:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .wish-item {

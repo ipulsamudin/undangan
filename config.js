@@ -12,7 +12,7 @@ const CONFIG = {
     groom: {
         name: "Muhammad Nur Syaifullah",
         shortName: "Syaiful",
-        photo: "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400",
+        photo: "assets/images/groom.jpg",
         fatherName: "Sarwi",
         motherName: "Eka Purwanti",
         instagram: "https://instagram.com/mnurs", // Kosongkan "" jika tidak ada
@@ -24,7 +24,7 @@ const CONFIG = {
     bride: {
         name: "Siti Sarah",
         shortName: "Sarah",
-        photo: "https://images.pexels.com/photos/1382731/pexels-photo-1382731.jpeg?auto=compress&cs=tinysrgb&w=400",
+        photo: "assets/images/bride.jpg",
         fatherName: "R.M Sholeh (Alm)",
         motherName: "Muhani (Almh)",
         instagram: "https://instagram.com/sitisarah12__", // Kosongkan "" jika tidak ada
@@ -44,7 +44,7 @@ const CONFIG = {
     event: {
         // Tanggal & Waktu utama untuk countdown (format: YYYY-MM-DDTHH:MM:SS)
         // -> Diarahkan ke tanggal akad nikah (acara puncak)
-        date: "2026-12-06T08:00:00",
+        date: "2026-12-06T09:00:00",
 
         // Format tanggal yang ditampilkan (acara puncak: Akad Nikah)
         dateDisplay: "Minggu, 6 Desember 2026",
@@ -52,17 +52,17 @@ const CONFIG = {
 
         // Akad Nikah
         akad: {
-            time: "08:00 - 10:00 WIB",
-            venue: "KUA Cimanggis",
-            address: "Perum Permata Puri, Jl. Zamrud Raya VI No.3, Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
-            mapsUrl: "https://maps.app.goo.gl/PnYAdP1HVkH4bAj49",
+            time: "09:00 - 11:00 WIB",
+            venue: "Basecamp Konsep Depok",
+            address: "Pedurenan depok Jln Nayan RT 06 RW 01 Cisalak Pasar, Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
         },
 
         // Resepsi
         resepsi: {
             time: "11:00 WIB - Selesai",
             venue: "Basecamp Konsep Depok",
-            address: "Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            address: "Pedurenan depok Jln Nayan RT 06 RW 01 Cisalak Pasar, Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
             mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
         },
     },
@@ -87,8 +87,8 @@ const CONFIG = {
 
         // Alamat Pengiriman Hadiah
         address: {
-            full: "Basecamp Konsep Depok\nCisalak Ps., Kec. Cimanggis\nKota Depok, Jawa Barat 16452",
-            short: "Basecamp Konsep Depok, Cisalak Ps., Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
+            full: "Basecamp Konsep Depok\nPedurenan depok Jln Nayan RT 06 RW 01\nCisalak Pasar, Kec. Cimanggis\nKota Depok, Jawa Barat 16452",
+            short: "Basecamp Konsep Depok, Pedurenan depok Jln Nayan RT 06 RW 01 Cisalak Pasar, Kec. Cimanggis, Kota Depok, Jawa Barat 16452",
             mapsUrl: "https://maps.app.goo.gl/CMCuqAuoe93w5BvXA?g_st=aw",
         },
     },
@@ -99,32 +99,32 @@ const CONFIG = {
     journey: [
         {
             date: "20 Juli 2025",
-            title: "Pertama Bertemu",
-            description: "Kami pertama kali bertemu di dating app. Saat itu, kami sering mengirim pesan dan ada sesuatu yang berbeda terasa di hati.",
+            title: "Awal Pertemuan",
+            description: "Di antara ribuan wajah asing di dunia maya, takdir memilih jalannya sendiri. Sebuah sapa sederhana menjadi awal dari kisah yang tak pernah kami duga — hati mulai berbicara dalam bahasa yang sama.",
             icon: "fas fa-heart"
         },
         {
             date: "18 September 2025",
-            title: "Mulai Dekat",
-            description: "Setelah beberapa kali bertemu, kami mulai sering mengobrol dan berbagi cerita. Dari sini, kami mulai mengenal satu sama lain lebih dalam.",
+            title: "Merajut Kedekatan",
+            description: "Perlahan, jarak menjelma menjadi kedekatan. Cerita-cerita kecil kami rangkai menjadi kenangan, dan setiap pertemuan menumbuhkan rasa yang tak lagi bisa disembunyikan.",
             icon: "fas fa-comments"
         },
         {
             date: "30 September 2025",
-            title: "Resmi Berpacaran",
-            description: "Di bawah langit malam yang penuh bintang, kami memutuskan untuk memulai hubungan yang lebih serius. Hari yang tak akan pernah terlupakan.",
+            title: "Sepakat Bersama",
+            description: "Di bawah taburan bintang, janji pertama terucap. Dua hati sepakat berjalan beriringan — bukan lagi 'aku' dan 'kamu', melainkan 'kita'.",
             icon: "fas fa-hand-holding-heart"
         },
         {
             date: "19 Juli 2026",
-            title: "Lamaran",
-            description: "Dengan penuh keberanian dan cinta, lamaran diajukan dan diterima dengan penuh kebahagiaan. Langkah menuju kehidupan baru dimulai.",
+            title: "Ikrar Lamaran",
+            description: "Sebuah cincin, sebuah pertanyaan, dan sebuah 'iya' yang mengubah segalanya. Restu keluarga menjadi saksi — cinta kami kini memiliki arah yang pasti.",
             icon: "fas fa-ring"
         },
         {
             date: "6 Desember 2026",
-            title: "Hari Bahagia",
-            description: "Akhirnya, hari yang kami tunggu-tunggu tiba. Kami siap untuk memulai perjalanan baru sebagai suami dan istri.",
+            title: "Hari yang Dinantikan",
+            description: "Hari yang lama kami rindukan akhirnya menjelma nyata. Dengan menyebut nama-Nya, dua jiwa disatukan dalam ikatan suci — awal dari selamanya.",
             icon: "fas fa-mosque"
         }
     ],
@@ -133,12 +133,12 @@ const CONFIG = {
     // GALERI FOTO
     // ==========================================
     gallery: [
-        "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "https://images.pexels.com/photos/1456613/pexels-photo-1456613.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "https://images.pexels.com/photos/265722/pexels-photo-265722.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "https://images.pexels.com/photos/1488315/pexels-photo-1488315.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "https://images.pexels.com/photos/1308318/pexels-photo-1308318.jpeg?auto=compress&cs=tinysrgb&w=600",
-        "https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "assets/images/gallery-1.jpg",
+        "assets/images/gallery-2.jpg",
+        "assets/images/gallery-3.jpg",
+        "assets/images/gallery-4.jpg",
+        "assets/images/gallery-5.jpg",
+        "assets/images/gallery-6.jpg",
     ],
 
     // ==========================================
