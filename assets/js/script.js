@@ -590,75 +590,124 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    // Gallery Lightbox
+    // Gallery Lightbox - cinematic mode
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.querySelector('.lightbox-image');
     const lightboxClose = document.querySelector('.lightbox-close');
     const lightboxPrev = document.querySelector('.lightbox-prev');
     const lightboxNext = document.querySelector('.lightbox-next');
+    const lightboxIndexEl = document.getElementById('lightboxIndex');
+    const lightboxTotalEl = document.getElementById('lightboxTotal');
+    const lightboxPlay = document.getElementById('lightboxPlay');
 
     let currentImageIndex = 0;
-    const galleryImages = CONFIG.gallery;
+    let autoplayTimer = null;
+    const AUTOPLAY_MS = 4000;
+    const galleryData = CONFIG.gallery;
 
-    // Add click event to gallery items (after they are loaded)
+    if (lightboxTotalEl) lightboxTotalEl.textContent = galleryData.length;
+
+    // Attach click handler to gallery items (bind by data-index so chapter cards are skipped)
     setTimeout(() => {
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        galleryItems.forEach((item, index) => {
-            item.addEventListener('click', function() {
-                currentImageIndex = index;
-                openLightbox(galleryImages[index]);
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function () {
+                const idx = parseInt(this.dataset.index, 10);
+                if (!isNaN(idx)) openLightbox(idx);
             });
         });
     }, 500);
 
-    function openLightbox(src) {
-        lightboxImage.src = src;
+    function renderLightboxSlide(index) {
+        const item = galleryData[index];
+        if (!item) return;
+        // Fade + Ken Burns: reset then set
+        lightboxImage.classList.remove('is-visible', 'kenburns');
+        // Force reflow to restart transition
+        void lightboxImage.offsetWidth;
+        lightboxImage.src = item.src;
+        lightboxImage.alt = item.caption || `Gallery ${index + 1}`;
+        // When new image is loaded, fade in + start Ken Burns
+        lightboxImage.onload = () => {
+            lightboxImage.classList.add('is-visible', 'kenburns');
+        };
+        if (lightboxIndexEl) lightboxIndexEl.textContent = index + 1;
+    }
+
+    function openLightbox(index) {
+        currentImageIndex = index;
+        renderLightboxSlide(index);
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
+        stopAutoplay();
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
     }
 
     function showPrevImage() {
-        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-        lightboxImage.src = galleryImages[currentImageIndex];
+        currentImageIndex = (currentImageIndex - 1 + galleryData.length) % galleryData.length;
+        renderLightboxSlide(currentImageIndex);
     }
 
     function showNextImage() {
-        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-        lightboxImage.src = galleryImages[currentImageIndex];
+        currentImageIndex = (currentImageIndex + 1) % galleryData.length;
+        renderLightboxSlide(currentImageIndex);
     }
 
-    if (lightboxClose) {
-        lightboxClose.addEventListener('click', closeLightbox);
+    function startAutoplay() {
+        stopAutoplay();
+        lightbox.classList.add('autoplay-on');
+        if (lightboxPlay) lightboxPlay.innerHTML = '<i class="fas fa-pause"></i>';
+        autoplayTimer = setInterval(showNextImage, AUTOPLAY_MS);
     }
 
-    if (lightboxPrev) {
-        lightboxPrev.addEventListener('click', showPrevImage);
+    function stopAutoplay() {
+        if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+        }
+        lightbox.classList.remove('autoplay-on');
+        if (lightboxPlay) lightboxPlay.innerHTML = '<i class="fas fa-play"></i>';
     }
 
-    if (lightboxNext) {
-        lightboxNext.addEventListener('click', showNextImage);
+    function toggleAutoplay() {
+        autoplayTimer ? stopAutoplay() : startAutoplay();
     }
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxPrev) lightboxPrev.addEventListener('click', () => { stopAutoplay(); showPrevImage(); });
+    if (lightboxNext) lightboxNext.addEventListener('click', () => { stopAutoplay(); showNextImage(); });
+    if (lightboxPlay) lightboxPlay.addEventListener('click', toggleAutoplay);
 
     if (lightbox) {
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
+        lightbox.addEventListener('click', function (e) {
+            if (e.target === lightbox) closeLightbox();
         });
+
+        // Swipe gesture (mobile)
+        let touchStartX = 0;
+        let touchEndX = 0;
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        lightbox.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const dx = touchEndX - touchStartX;
+            if (Math.abs(dx) < 50) return;
+            stopAutoplay();
+            dx > 0 ? showPrevImage() : showNextImage();
+        }, { passive: true });
     }
 
-    // Keyboard navigation for lightbox
-    document.addEventListener('keydown', function(e) {
-        if (lightbox && lightbox.classList.contains('active')) {
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowLeft') showPrevImage();
-            if (e.key === 'ArrowRight') showNextImage();
-        }
+    // Keyboard navigation
+    document.addEventListener('keydown', function (e) {
+        if (!lightbox || !lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowLeft')  { stopAutoplay(); showPrevImage(); }
+        else if (e.key === 'ArrowRight') { stopAutoplay(); showNextImage(); }
+        else if (e.key === ' ')          { e.preventDefault(); toggleAutoplay(); }
     });
 
     // Add CSS animations
@@ -789,17 +838,36 @@ function loadConfigData() {
     setText('resepsiAddress', CONFIG.event.resepsi.address);
     setAttr('resepsiMaps', 'href', CONFIG.event.resepsi.mapsUrl);
 
-    // Gallery Section
+    // Gallery Section - initial: first 8 tiles. Sisanya hidden sampai CTA diklik.
+    const GALLERY_INITIAL_VISIBLE = 8;
     const galleryGrid = document.getElementById('galleryGrid');
     if (galleryGrid) {
-        galleryGrid.innerHTML = CONFIG.gallery.map((src, index) => `
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="${(index + 1) * 100}">
-                <img src="${src}" alt="Gallery ${index + 1}">
-                <div class="gallery-overlay">
-                    <i class="fas fa-search-plus"></i>
+        galleryGrid.innerHTML = CONFIG.gallery.map((item, index) => {
+            const type = item.type || 'regular';
+            const extraCls = index >= GALLERY_INITIAL_VISIBLE ? ' gallery-item--extra' : '';
+            const aosName = type === 'hero' ? 'zoom-in-up' : 'fade-up';
+            const aosDelay = Math.min(index * 40, 300);
+            return `
+                <div class="gallery-item gallery-item--${type}${extraCls}" data-aos="${aosName}" data-aos-delay="${aosDelay}" data-index="${index}">
+                    <img src="${item.src}" alt="${item.caption || 'Gallery ' + (index + 1)}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus gallery-zoom-icon"></i>
+                    </div>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
+    }
+
+    // "Lihat Selengkapnya" CTA — reveals hidden regular tiles
+    const galleryShowMore = document.getElementById('galleryShowMore');
+    if (galleryShowMore && galleryGrid) {
+        galleryShowMore.addEventListener('click', () => {
+            galleryGrid.classList.add('is-expanded');
+            galleryShowMore.classList.add('is-hidden');
+            if (window.AOS && typeof window.AOS.refreshHard === 'function') {
+                window.AOS.refreshHard();
+            }
+        });
     }
 
     // Gift Section - Bank

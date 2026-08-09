@@ -130,15 +130,55 @@ const CONFIG = {
     ],
 
     // ==========================================
-    // GALERI FOTO
+    // GALERI FOTO PREWEDDING - 40 foto tersusun bercerita
+    // Struktur: { src, caption, type }
+    // type: "regular" (1x1) | "featured" (2x1 wide) | "hero" (3x3 big)
+    //
+    // Nama file diurutkan 01..40 sesuai urutan tampil.
+    // Untuk mengubah urutan: cukup rename file (mis. tukar 05.png <-> 15.png)
+    // dan sesuaikan baris di array ini.
     // ==========================================
     gallery: [
-        "assets/images/gallery-1.jpg",
-        "assets/images/gallery-2.jpg",
-        "assets/images/gallery-3.jpg",
-        "assets/images/gallery-4.jpg",
-        "assets/images/gallery-5.jpg",
-        "assets/images/gallery-6.jpg",
+        { src: "assets/images/gallery/01.jpg", caption: "Takdir mempertemukan",              type: "hero"     },
+        { src: "assets/images/gallery/02.png", caption: "Melangkah, belum menoleh",          type: "regular"  },
+        { src: "assets/images/gallery/03.png", caption: "Berbagi ruang, belum saling melihat", type: "regular" },
+        { src: "assets/images/gallery/04.jpg", caption: "Hampir bersentuhan",                type: "featured" },
+        { src: "assets/images/gallery/05.png", caption: "Menoleh untuk pertama kalinya",     type: "regular"  },
+        { src: "assets/images/gallery/06.png", caption: "Berdiri bersisian",                 type: "regular"  },
+        { src: "assets/images/gallery/07.png", caption: "Candaan mulai tumbuh",              type: "regular"  },
+        { src: "assets/images/gallery/08.png", caption: "Tertawa bersama",                   type: "regular"  },
+        { src: "assets/images/gallery/09.png", caption: "Semangat berdua",                   type: "regular"  },
+        { src: "assets/images/gallery/10.png", caption: "Duduk bersandar",                   type: "regular"  },
+        { src: "assets/images/gallery/11.jpg", caption: "Kamu — yang kupilih",               type: "featured" },
+        { src: "assets/images/gallery/12.png", caption: "Sepakat dalam hening",              type: "regular"  },
+        { src: "assets/images/gallery/13.png", caption: "Sandaran jiwa",                     type: "regular"  },
+        { src: "assets/images/gallery/14.png", caption: "Cerita ringan berdua",              type: "regular"  },
+        { src: "assets/images/gallery/15.png", caption: "Menari dalam rasa",                 type: "regular"  },
+        { src: "assets/images/gallery/16.png", caption: "Saling membutuhkan",                type: "regular"  },
+        { src: "assets/images/gallery/17.png", caption: "Mawar mulai hadir",                 type: "regular"  },
+        { src: "assets/images/gallery/18.png", caption: "Ikrar dilontarkan",                 type: "regular"  },
+        { src: "assets/images/gallery/19.png", caption: "'Iya' yang menggetarkan",           type: "regular"  },
+        { src: "assets/images/gallery/20.png", caption: "Menanti hari itu",                  type: "regular"  },
+        { src: "assets/images/gallery/21.png", caption: "Menghitung mundur",                 type: "regular"  },
+        { src: "assets/images/gallery/22.jpg", caption: "Hari terbaik menanti",              type: "featured" },
+        { src: "assets/images/gallery/23.png", caption: "Berdiri di ambang hari sakral",     type: "regular"  },
+        { src: "assets/images/gallery/24.png", caption: "Menyiapkan hati",                   type: "regular"  },
+        { src: "assets/images/gallery/25.png", caption: "Warna merah mulai hadir",           type: "regular"  },
+        { src: "assets/images/gallery/26.png", caption: "Tegak dalam iman",                  type: "regular"  },
+        { src: "assets/images/gallery/27.png", caption: "Sekilas menoleh",                   type: "regular"  },
+        { src: "assets/images/gallery/28.png", caption: "Kini kita berdua di depan",         type: "regular"  },
+        { src: "assets/images/gallery/29.png", caption: "Bersama di kursi tua",              type: "regular"  },
+        { src: "assets/images/gallery/30.png", caption: "Kesetiaan sejati",                  type: "regular"  },
+        { src: "assets/images/gallery/31.png", caption: "Rendah hati, dalam bakti",          type: "regular"  },
+        { src: "assets/images/gallery/32.png", caption: "Menghormati tradisi",               type: "regular"  },
+        { src: "assets/images/gallery/33.png", caption: "Dekat dalam janji",                 type: "regular"  },
+        { src: "assets/images/gallery/34.png", caption: "Bersisian tanpa jeda",              type: "regular"  },
+        { src: "assets/images/gallery/35.png", caption: "Melindungi setia",                  type: "regular"  },
+        { src: "assets/images/gallery/36.png", caption: "Wajah yang dinanti",                type: "regular"  },
+        { src: "assets/images/gallery/37.png", caption: "Senyum menyongsong hari besar",     type: "regular"  },
+        { src: "assets/images/gallery/38.png", caption: "Menghitung hari-hari terakhir",     type: "regular"  },
+        { src: "assets/images/gallery/39.png", caption: "Berteduh dalam cinta",              type: "regular"  },
+        { src: "assets/images/gallery/40.jpg", caption: "Menuju selamanya",                  type: "hero"     },
     ],
 
     // ==========================================

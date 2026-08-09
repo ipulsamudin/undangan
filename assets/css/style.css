@@ -924,64 +924,164 @@ section {
 }
 
 /* ==========================================
-   GALLERY SECTION
+   GALLERY SECTION — Editorial Storybook
    ========================================== */
 .gallery-section {
     background: var(--bg-light);
 }
 
+/* Fixed 4-column grid di desktop, semua tile ukuran sama (square 1:1) */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
 }
 
 .gallery-item {
     position: relative;
-    border-radius: 15px;
+    border-radius: 14px;
     overflow: hidden;
-    aspect-ratio: 1;
     cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    aspect-ratio: 1;
 }
 
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition);
+    transition: transform 0.7s ease;
+    display: block;
 }
 
+/* Gradient overlay + caption slide-up */
 .gallery-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(201, 123, 132, 0.78);
+    inset: 0;
+    background: linear-gradient(to top,
+        rgba(74, 56, 56, 0.85) 0%,
+        rgba(74, 56, 56, 0.45) 35%,
+        rgba(74, 56, 56, 0.05) 60%,
+        rgba(74, 56, 56, 0) 100%);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px 20px;
+}
+
+.gallery-zoom-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 1rem;
+    color: var(--text-white);
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: var(--transition);
+    transform: scale(0.7);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.gallery-overlay i {
-    font-size: 2rem;
-    color: var(--text-white);
-    transform: scale(0.5);
-    transition: var(--transition);
+/* Hover state */
+.gallery-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.06);
 }
 
 .gallery-item:hover .gallery-overlay {
     opacity: 1;
 }
 
-.gallery-item:hover .gallery-overlay i {
+.gallery-item:hover .gallery-zoom-icon {
+    opacity: 1;
     transform: scale(1);
+}
+
+/* Show-more CTA: hide 'regular' tiles until user clicks "Lihat Selengkapnya" */
+.gallery-grid:not(.is-expanded) .gallery-item--extra {
+    display: none;
+}
+
+.gallery-grid.is-expanded .gallery-item--extra {
+    animation: galleryFadeIn 0.55s ease-out both;
+}
+
+@keyframes galleryFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.gallery-more {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.btn-show-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 34px;
+    background: transparent;
+    color: var(--primary-dark);
+    border: 1.5px solid var(--primary-color);
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: background 0.35s ease, color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 4px 20px rgba(201, 123, 132, 0.15);
+}
+
+.btn-show-more:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(201, 123, 132, 0.30);
+}
+
+.btn-show-more i {
+    font-size: 0.85rem;
+    transition: transform 0.35s ease;
+}
+
+.btn-show-more:hover i {
+    transform: translateY(3px);
+}
+
+.btn-show-more.is-hidden {
+    display: none;
+}
+
+/* Subtle gold border pulse for real-photo hero on hover */
+.gallery-item--hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    pointer-events: none;
+    transition: border-color 0.4s ease;
+}
+
+.gallery-item--hero:hover::after {
+    border-color: var(--gold-soft);
 }
 
 /* ==========================================
@@ -1513,10 +1613,85 @@ section {
     visibility: visible;
 }
 
+.lightbox-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px 90px;
+    box-sizing: border-box;
+}
+
 .lightbox-image {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 100%;
+    max-height: 100%;
     border-radius: 10px;
+    opacity: 0;
+    transform: scale(1);
+    transition: opacity 0.4s ease;
+    will-change: opacity, transform;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-image.is-visible {
+    opacity: 1;
+}
+
+/* Ken Burns: subtle 5s zoom from 1.0 → 1.05 */
+@keyframes kenburns {
+    from { transform: scale(1); }
+    to   { transform: scale(1.05); }
+}
+
+.lightbox-image.kenburns {
+    animation: kenburns 6s ease-out forwards;
+}
+
+.lightbox-progress {
+    position: absolute;
+    top: 22px;
+    left: 30px;
+    color: var(--text-white);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    letter-spacing: 2px;
+    opacity: 0.75;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 6px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.lightbox-play {
+    position: absolute;
+    top: 22px;
+    right: 90px;
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-white);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.lightbox-play:hover {
+    background: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.lightbox.autoplay-on .lightbox-play {
+    background: var(--primary-color);
 }
 
 .lightbox-close {
@@ -1576,9 +1751,7 @@ section {
         font-size: 3rem;
     }
 
-    .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    /* Gallery tetap 3-kolom di tablet */
 }
 
 @media (max-width: 768px) {
@@ -1864,10 +2037,15 @@ section {
         font-size: 0.85rem;
     }
 
-    /* Gallery */
+    /* Gallery — mobile: turun ke 2 kolom */
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
+    }
+    .btn-show-more {
+        padding: 12px 26px;
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
     }
 
     /* RSVP */
@@ -1965,7 +2143,7 @@ section {
         font-size: 0.85rem;
     }
 
-    /* Lightbox */
+    /* Lightbox — mobile */
     .lightbox-prev,
     .lightbox-next {
         width: 40px;
@@ -1980,6 +2158,24 @@ section {
         top: 10px;
         right: 15px;
         font-size: 2.5rem;
+    }
+
+    .lightbox-stage {
+        padding: 60px 30px 40px;
+    }
+
+    .lightbox-progress {
+        top: 15px;
+        left: 15px;
+        font-size: 0.85rem;
+        padding: 5px 12px;
+    }
+
+    .lightbox-play {
+        top: 12px;
+        right: 65px;
+        width: 38px;
+        height: 38px;
     }
 }
 

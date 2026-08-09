@@ -418,6 +418,13 @@
                 <div class="gallery-grid" id="galleryGrid">
                     <!-- Gallery items will be loaded from config -->
                 </div>
+
+                <div class="gallery-more" data-aos="fade-up">
+                    <button class="btn-show-more" id="galleryShowMore">
+                        <span>Lihat Selengkapnya</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -614,10 +621,14 @@
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
-        <button class="lightbox-close">&times;</button>
-        <img src="" alt="Gallery Image" class="lightbox-image">
-        <button class="lightbox-prev"><i class="fas fa-chevron-left"></i></button>
-        <button class="lightbox-next"><i class="fas fa-chevron-right"></i></button>
+        <button class="lightbox-close" aria-label="Tutup">&times;</button>
+        <div class="lightbox-progress"><span id="lightboxIndex">1</span> / <span id="lightboxTotal">40</span></div>
+        <button class="lightbox-play" id="lightboxPlay" aria-label="Putar otomatis"><i class="fas fa-play"></i></button>
+        <div class="lightbox-stage">
+            <img src="" alt="Gallery Image" class="lightbox-image">
+        </div>
+        <button class="lightbox-prev" aria-label="Foto sebelumnya"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-next" aria-label="Foto berikutnya"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <!-- Config -->
