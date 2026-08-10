@@ -633,6 +633,10 @@ document.addEventListener('DOMContentLoaded', function() {
         lightboxImage.onload = () => {
             lightboxImage.classList.add('is-visible', 'kenburns');
         };
+        // Kalau image broken/hilang, auto-skip ke slide berikutnya
+        lightboxImage.onerror = () => {
+            showNextImage();
+        };
         if (lightboxIndexEl) lightboxIndexEl.textContent = index + 1;
     }
 
@@ -853,7 +857,7 @@ function loadConfigData() {
             const aosDelay = Math.min(index * 40, 300);
             return `
                 <div class="gallery-item gallery-item--${type}${extraCls}" data-aos="${aosName}" data-aos-delay="${aosDelay}" data-index="${index}">
-                    <img src="${item.src}" alt="${item.caption || 'Gallery ' + (index + 1)}" loading="lazy">
+                    <img src="${item.src}" alt="${item.caption || 'Gallery ' + (index + 1)}" loading="lazy" onerror="this.closest('.gallery-item').style.display='none'">
                     <div class="gallery-overlay">
                         <i class="fas fa-search-plus gallery-zoom-icon"></i>
                     </div>
