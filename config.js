@@ -130,11 +130,11 @@ const CONFIG = {
     ],
 
     // ==========================================
-    // GALERI FOTO PREWEDDING - 40 foto tersusun bercerita
+    // GALERI FOTO PREWEDDING - 42 foto tersusun bercerita
     // Struktur: { src, caption, type }
     // type: "regular" (1x1) | "featured" (2x1 wide) | "hero" (3x3 big)
     //
-    // Nama file diurutkan 01..40 sesuai urutan tampil.
+    // Nama file diurutkan 01..42 sesuai urutan tampil.
     // Untuk mengubah urutan: cukup rename file (mis. tukar 05.png <-> 15.png)
     // dan sesuaikan baris di array ini.
     // ==========================================
@@ -160,8 +160,8 @@ const CONFIG = {
         { src: "assets/images/gallery/19.png", caption: "'Iya' yang menggetarkan",           type: "regular"  },
         { src: "assets/images/gallery/20.png", caption: "Menanti hari itu",                  type: "regular"  },
         { src: "assets/images/gallery/21.png", caption: "Menghitung mundur",                 type: "regular"  },
-        { src: "assets/images/gallery/22.jpg", caption: "Hari terbaik menanti",              type: "featured" },
-        { src: "assets/images/gallery/23.png", caption: "Berdiri di ambang hari sakral",     type: "regular"  },
+        { src: "assets/images/gallery/22.png", caption: "Hari terbaik menanti",              type: "featured" },
+        { src: "assets/images/gallery/23.jpg", caption: "Berdiri di ambang hari sakral",     type: "regular"  },
         { src: "assets/images/gallery/24.png", caption: "Menyiapkan hati",                   type: "regular"  },
         { src: "assets/images/gallery/25.png", caption: "Warna merah mulai hadir",           type: "regular"  },
         { src: "assets/images/gallery/26.png", caption: "Tegak dalam iman",                  type: "regular"  },
@@ -179,6 +179,8 @@ const CONFIG = {
         { src: "assets/images/gallery/38.png", caption: "Menghitung hari-hari terakhir",     type: "regular"  },
         { src: "assets/images/gallery/39.png", caption: "Berteduh dalam cinta",              type: "regular"  },
         { src: "assets/images/gallery/40.jpg", caption: "Menuju selamanya",                  type: "hero"     },
+        { src: "assets/images/gallery/41.jpg", caption: "Doa yang menyatu",                  type: "regular"  },
+        { src: "assets/images/gallery/42.jpg", caption: "Selamanya, bersamamu",              type: "regular"  },
     ],
 
     // ==========================================

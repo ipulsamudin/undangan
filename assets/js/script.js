@@ -5,6 +5,9 @@
    ========================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Safety: reset body overflow (bfcache/iOS bisa mewarisi state 'hidden' dari lightbox sebelumnya)
+    document.body.style.overflow = '';
+
     // Load config data
     loadConfigData();
 
@@ -638,6 +641,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderLightboxSlide(index);
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
+        startAutoplay();
     }
 
     function closeLightbox() {
