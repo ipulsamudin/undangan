@@ -130,11 +130,11 @@ const CONFIG = {
     ],
 
     // ==========================================
-    // GALERI FOTO PREWEDDING - 42 foto tersusun bercerita
+    // GALERI FOTO PREWEDDING - 44 foto tersusun bercerita
     // Struktur: { src, caption, type }
     // type: "regular" (1x1) | "featured" (2x1 wide) | "hero" (3x3 big)
     //
-    // Nama file diurutkan 01..42 sesuai urutan tampil.
+    // Nama file diurutkan 01..44 sesuai urutan tampil.
     // Untuk mengubah urutan: cukup rename file (mis. tukar 05.png <-> 15.png)
     // dan sesuaikan baris di array ini.
     // ==========================================
@@ -180,7 +180,9 @@ const CONFIG = {
         { src: "assets/images/gallery/39.png", caption: "Berteduh dalam cinta",              type: "regular"  },
         { src: "assets/images/gallery/40.jpg", caption: "Menuju selamanya",                  type: "hero"     },
         { src: "assets/images/gallery/41.jpg", caption: "Doa yang menyatu",                  type: "regular"  },
-        { src: "assets/images/gallery/42.jpg", caption: "Selamanya, bersamamu",              type: "regular"  },
+        { src: "assets/images/gallery/42.jpg", caption: "Langkah pertama bersama",           type: "regular"  },
+        { src: "assets/images/gallery/43.jpg", caption: "Menuju hari suci",                  type: "regular"  },
+        { src: "assets/images/gallery/44.jpg", caption: "Bersatu selamanya",                 type: "regular"  },
     ],
 
     // ==========================================
