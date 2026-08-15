@@ -12,7 +12,7 @@
 
 Semua foto galeri sekarang **hidup di sub-folder `gallery/`** dengan nama file asli
 (bukan lagi `gallery-1.jpg` … `gallery-6.jpg`). Urutan tampil di undangan diatur oleh
-array `gallery` di [`config.js`](../../config.js) — 40 slot, tersusun bercerita
+array `gallery` di [`config.js`](../../config.js) — 48 slot, tersusun bercerita
 mengikuti alur *"Perjalanan Modern → Hari Pernikahan Adat"*.
 
 ### Menambah / mengganti foto galeri
